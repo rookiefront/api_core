@@ -1,7 +1,6 @@
 package manage_api
 
 import (
-	model2 "github.com/rookiefront/api-core/cmd/model"
 	"github.com/rookiefront/api-core/model"
 )
 
@@ -21,7 +20,7 @@ type ManageApiModule struct {
 	Where       bool                     `json:"where"`
 	DialogWidth int                      `json:"dialog_width"`
 
-	TableOperateBtn model2.DataJSONArray `json:"table_operate_btn" gorm:"column:table_operate_btn;type:longtext"`
+	TableOperateBtn model.DataJSONArray `json:"table_operate_btn" gorm:"column:table_operate_btn;type:longtext"`
 }
 
 func (ManageApiModule) TableName() string {

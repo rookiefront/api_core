@@ -3,9 +3,9 @@ package business
 import (
 	"fmt"
 	"github.com/front-ck996/csy"
-	"github.com/rookiefront/api-core/cmd/model"
 	"github.com/rookiefront/api-core/define"
 	"github.com/rookiefront/api-core/global"
+	"github.com/rookiefront/api-core/model"
 	"github.com/rookiefront/api-core/model/manage_api"
 	"net/http"
 	"reflect"

@@ -1,7 +1,5 @@
 package model
 
-import ()
-
 type SysMenu struct {
 	Model
 	MenuName  string         `json:"menuName" gorm:"column:menu_name;comment:菜单名称"`

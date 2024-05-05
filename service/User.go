@@ -6,8 +6,8 @@ import (
 	"github.com/front-ck996/csy"
 	"github.com/front-ck996/csy/store"
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/rookiefront/api-core/cmd/model"
 	"github.com/rookiefront/api-core/global"
+	"github.com/rookiefront/api-core/model"
 
 	"time"
 )

@@ -120,10 +120,11 @@ package model
 
 import (
 	%s
+	"github.com/rookiefront/api-core/model"
 )
 
 type %s struct {
-		Model
+		model.Model
 	%s
 }
 
@@ -172,8 +173,12 @@ func GetModel(tableName string,isArray bool) (interface{}, error) {
 	return "", errors.New("未找到")
 }
 
-
-`, strings.Join(hashAppend, "\r\n"))
+func GetHash() map[string]any {
+	hash := map[string]any{}
+	%s
+	return hash
+}
+`, strings.Join(hashAppend, "\r\n"), strings.Join(hashAppend, "\r\n"))
 	// 格式化代码
 	code, err2 = csy.FormatCode([]byte(modelHashTemplateStr))
 	if err2 == nil {

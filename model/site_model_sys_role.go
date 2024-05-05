@@ -1,7 +1,5 @@
 package model
 
-import ()
-
 type SysRole struct {
 	Model
 	RoleName       string    `json:"roleName" gorm:"column:role_name;comment:角色名称"`

@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"github.com/front-ck996/csy"
 	"github.com/gin-gonic/gin"
-	model2 "github.com/rookiefront/api-core/cmd/model"
 	"github.com/rookiefront/api-core/define"
 	"github.com/rookiefront/api-core/global"
+	"github.com/rookiefront/api-core/model"
 	"github.com/rookiefront/api-core/model/manage_api"
 	"gorm.io/gorm"
 	"strconv"
@@ -181,7 +181,7 @@ func Get(c *define.BasicContext, info reqInfo, result any, currentModule manage_
 				//c.SendJsonOk(r)
 				return
 			case "Link":
-				linkModule, err := model2.GetModel(fieldInfo.Associations.Module, false)
+				linkModule, err := model.GetModel(fieldInfo.Associations.Module, false)
 				if err != nil {
 					c.SendJsonErr(err)
 					return

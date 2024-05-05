@@ -17,7 +17,7 @@ var dbFields = map[string]map[string]string{}
 var dbFieldArray = []map[string]string{
 	{
 		"indexName": "tree_parent",
-		"code":      "PrimarykeyType",
+		"code":      "model.PrimarykeyType",
 	},
 	{
 		"indexName": "icon",
@@ -45,7 +45,7 @@ var dbFieldArray = []map[string]string{
 	},
 	{
 		"indexName": "images",
-		"code":      "DataJSONArray",
+		"code":      "model.DataJSONArray",
 		"db":        "type:longtext",
 	},
 	{
@@ -58,7 +58,7 @@ var dbFieldArray = []map[string]string{
 	},
 	{
 		"indexName": "json",
-		"code":      "DataJSON",
+		"code":      "model.DataJSON",
 		"db":        "type:longtext",
 	},
 	{

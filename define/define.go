@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"github.com/front-ck996/csy"
 	"github.com/gin-gonic/gin"
-	"github.com/rookiefront/api-core/cmd/model"
 	"github.com/rookiefront/api-core/config"
 	"github.com/rookiefront/api-core/global"
+	"github.com/rookiefront/api-core/model"
 	"github.com/rookiefront/api-core/service"
 	"net/http"
 )

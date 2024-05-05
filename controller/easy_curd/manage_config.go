@@ -1,7 +1,6 @@
 package easy_curd
 
 import (
-	"github.com/rookiefront/api-core/cmd/model"
 	"github.com/rookiefront/api-core/define"
 	"github.com/rookiefront/api-core/global"
 	"github.com/rookiefront/api-core/model/manage_api"
@@ -34,7 +33,7 @@ func Tables(c *define.BasicContext) {
 }
 
 func StepList(c *define.BasicContext) {
-	list := []model.SysStep{}
-	global.DB.Where("parent_id = ?", 0).Or("parent_id is null").Find(&list)
-	c.SendJsonOk(list)
+	//list := []model.SysStep{}
+	//global.DB.Where("parent_id = ?", 0).Or("parent_id is null").Find(&list)
+	//c.SendJsonOk(list)
 }
