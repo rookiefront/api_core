@@ -1,4 +1,4 @@
-module github.com/rookiefront/api_core
+module github.com/rookiefront/api-core
 
 go 1.21.4
 

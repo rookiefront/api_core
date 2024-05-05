@@ -1,7 +1,7 @@
 package config
 
 import (
-	"github.com/rookiefront/api_core/global"
+	"github.com/rookiefront/api-core/global"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"log"

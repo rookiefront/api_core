@@ -1,7 +1,7 @@
 package config_test
 
 import (
-	"github.com/rookiefront/api_core/config"
+	"github.com/rookiefront/api-core/config"
 	"gopkg.in/yaml.v3"
 	"os"
 	"testing"
