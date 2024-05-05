@@ -26,21 +26,19 @@ func registerSystemRouter() {
 	//
 	// 退出登录
 	commonApiAuti.GET("/user/logout", define.WrapHandler(apiUser.Logout))
-
 	commonApiAuti.POST("/user/update", define.WrapHandler(apiUser.Update))
-	//
 	//// 获取角色的菜单列表
-	//commonApiAuti.GET("/user/role_menu_list", define.WrapHandler(apiUser.RoleMenuList))
+	commonApiAuti.GET("/user/role_menu_list", define.WrapHandler(apiUser.RoleMenuList))
 	commonApiAuti.GET("/user/current_user_menu", define.WrapHandler(apiUser.CurrentUserMenu))
-	//commonApiAuti.POST("/user/set_password", define.WrapHandler(apiUser.SetPassword))
-	//
+	commonApiAuti.POST("/user/set_password", define.WrapHandler(apiUser.SetPassword))
+
 	//// 可以访问的接口资源
-	//commonApiAuti.GET("/user/request_resource", define.WrapHandler(apiUser.RequestResource))
+	commonApiAuti.GET("/user/request_resource", define.WrapHandler(apiUser.RequestResource))
 	//
-	//commonApiAuti.PUT("/user/request_resource", define.WrapHandler(apiUser.UpdateRequestResource))
-	//
+	commonApiAuti.PUT("/user/request_resource", define.WrapHandler(apiUser.UpdateRequestResource))
 	// 获取配置详情
 	commonApiAuti.GET("/manage/config", define.WrapHandler(easy_curd.ManageConfig))
+
 	///// 字典
 	//apiDict := common.ApiDict{}
 	//commonApi.GET("/dict/list", define.WrapHandler(apiDict.List))
@@ -48,12 +46,12 @@ func registerSystemRouter() {
 	//apiCity := common.ApiCity{}
 	//commonApi.GET("/city/lazy", define.WrapHandler(apiCity.Lazy))
 	//
-	///// 步骤选择
-	//apiStep := common.ApiStep{}
-	//commonApi.GET("/step/refresh_full_path", define.WrapHandler(apiStep.RefreshFulPath))
-	//
-	///// 文件上传
-	//apiUpload := common.ApiUpload{}
-	//commonApi.POST("/upload/image", define.WrapHandler(apiUpload.UploadImage))
-	//commonApi.POST("/upload/file", define.WrapHandler(apiUpload.UploadFile))
+	/// 步骤选择
+	apiStep := common.ApiStep{}
+	commonApi.GET("/step/refresh_full_path", define.WrapHandler(apiStep.RefreshFulPath))
+
+	/// 文件上传
+	apiUpload := common.ApiUpload{}
+	commonApi.POST("/upload/image", define.WrapHandler(apiUpload.UploadImage))
+	commonApi.POST("/upload/file", define.WrapHandler(apiUpload.UploadFile))
 }

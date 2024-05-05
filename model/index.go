@@ -14,8 +14,8 @@ var hash map[string]any
 
 type Model struct {
 	ID           PrimarykeyType `json:"id" gorm:"primarykey;int"`
-	CreatedAt    time.Time      `json:"-"`
-	UpdatedAt    time.Time      `json:"-"`
+	CreatedAt    time.Time      `json:"created_at"`
+	UpdatedAt    time.Time      `json:"updated_at"`
 	DeletedAt    gorm.DeletedAt `json:"deleted_at" gorm:"index"`
 	CreateUserID uint           `json:"-" gorm:"column:c_id;index"`
 }
