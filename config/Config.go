@@ -19,18 +19,19 @@ const (
 )
 
 type System struct {
-	Mode                string `yaml:"mode"`
-	Host                string `yaml:"host"`
-	Port                int    `yaml:"port"`
-	RootDir             string `yaml:"root_dir"`
-	DbDir               string `yaml:"db_dir"`
-	StaticDir           string `yaml:"static_dir"`
-	UploadDir           string `yaml:"upload_dir"`
-	SiteUploadDir       string `yaml:"-"`
-	FullUploadDir       string `yaml:"-"`
-	FullDbDir           string `yaml:"-"`
-	ApiPrefix           string `yaml:"api_prefix"`             // api 地址前缀
-	BusinessTablePreFix string `yaml:"business_table_pre_fix"` // 业务表前缀
+	Version       string `yaml:"version"`
+	Mode          string `yaml:"mode"` // 开发模式,生产模式
+	Host          string `yaml:"host"` // host
+	Port          int    `yaml:"port"`
+	RootDir       string `yaml:"root_dir"`       // 当前运行根目录
+	DbDir         string `yaml:"db_dir"`         // db存放的目录,内存数据库
+	StaticPreFix  string `yaml:"static_pre_fix"` // 静态URL 地址
+	StaticDir     string `yaml:"static_dir"`     // 静态文件夹
+	UploadDir     string `yaml:"upload_dir"`     // 上传文件夹
+	SiteUploadDir string `yaml:"-"`
+	FullUploadDir string `yaml:"-"`
+	FullDbDir     string `yaml:"-"`
+	ApiPrefix     string `yaml:"api_prefix"` // api 地址前缀
 }
 
 type DB struct {

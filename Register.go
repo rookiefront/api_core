@@ -1,5 +1,9 @@
 package api_core
 
-func Register() {
+import (
+	"github.com/rookiefront/api-core/initialize"
+)
 
+func Register() {
+	initialize.Init()
 }
