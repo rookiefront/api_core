@@ -88,6 +88,9 @@ func EasyCURD(c *define.BasicContext) {
 		Update(c, req, reqData, currentModule)
 		return
 	case http.MethodDelete:
+		if c.VerifyRequestQualification(currentModule.TaName+"_delete") != nil {
+			return
+		}
 		if !currentModule.Delete {
 			c.SendJsonErr("接口未激活")
 			return

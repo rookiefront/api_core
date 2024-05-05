@@ -12,6 +12,7 @@ import (
 	"github.com/rookiefront/api-core/model/manage_api"
 	"github.com/rookiefront/api-core/service"
 	"github.com/rookiefront/api-core/utils/common"
+	"strings"
 )
 
 type ApiUser struct {
@@ -34,6 +35,8 @@ type userLogin struct {
 type userUpdate struct {
 	model.Model
 	UserName string `json:"userName" validate:"required"`
+	//BlindDateMember       model.BlindDateMember `json:"blindDateMember" gorm:"foreignKey:UserId;comment:对应的相亲用户ID"`
+	//BlindDateMemberEnable int                   `json:"blindDateMemberEnable" gorm:"column:blind_date_member_enable;type:tinyint(1);default:2;comment:相亲信息激活"`
 }
 type userSetPassword struct {
 	UserId   model.PrimarykeyType `json:"userId"`
@@ -234,28 +237,29 @@ type RequestResourceDefineUpdate struct {
 
 func (api *ApiUser) UpdateRequestResource(c *define.BasicContext) {
 
-	//if c.VerifyRequestQualification("btn_allow_request_resource") != nil {
-	//	return
-	//}
-	//
-	//var req RequestResourceDefineUpdate
-	//c.ShouldBindJSON(&req)
-	//saveData := model.SysRole{
-	//	PermissionList: strings.Join(req.Value, ","),
-	//}
-	//saveData.ID = req.ID
-	//if saveData.ID == 0 {
-	//	return
-	//}
-	//if saveData.PermissionList == "" {
-	//	saveData.PermissionList = " "
-	//}
-	//tx := global.DB.Updates(&saveData)
-	//if tx.Error != nil {
-	//	c.SendJsonErr(tx.Error)
-	//	return
-	//}
-	//c.SendJsonOk("")
+	if err := c.VerifyRequestQualification("btn_allow_request_resource"); err != nil {
+		c.SendJsonErr(err)
+		return
+	}
+
+	var req RequestResourceDefineUpdate
+	c.ShouldBindJSON(&req)
+	saveData := model.SysRole{
+		PermissionList: strings.Join(req.Value, ","),
+	}
+	saveData.ID = req.ID
+	if saveData.ID == 0 {
+		return
+	}
+	if saveData.PermissionList == "" {
+		saveData.PermissionList = " "
+	}
+	tx := global.DB.Updates(&saveData)
+	if tx.Error != nil {
+		c.SendJsonErr(tx.Error)
+		return
+	}
+	c.SendJsonOk("")
 }
 
 func (api *ApiUser) RequestResource(c *define.BasicContext) {

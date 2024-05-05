@@ -32,6 +32,9 @@ func getVerify(c *define.BasicContext, info reqInfo, dbHandle *gorm.DB, reqData 
 func Get(c *define.BasicContext, info reqInfo, result any, currentModule manage_api.ManageApiModule) {
 	reqData := c.GetReqData()
 	dbHandle := global.DB.Table(info.fullTableName)
+	if c.VerifyRequestQualification(currentModule.TaName+"_query") != nil {
+		return
+	}
 	switch info.getType {
 	// tree 数据懒加载
 	case "lazy":

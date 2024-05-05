@@ -11,6 +11,11 @@ import (
 
 func Insert(c *define.BasicContext, info reqInfo, reqData map[string]any, currentModule manage_api.ManageApiModule) {
 	insertData := map[string]any{}
+
+	if c.VerifyRequestQualification(currentModule.TaName+"_add") != nil {
+		return
+	}
+
 	for _, field := range currentModule.Fields {
 		if field.DbFieldType == "json" || field.DbFieldType == "images" {
 			marshal, err := json.Marshal(reqData[field.FrontField])

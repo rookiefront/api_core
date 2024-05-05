@@ -12,8 +12,11 @@ import (
 )
 
 func Update(c *define.BasicContext, info reqInfo, reqData map[string]any, currentModule manage_api.ManageApiModule) {
-	insertData := map[string]any{}
+	if c.VerifyRequestQualification(currentModule.TaName+"_edit") != nil {
+		return
+	}
 
+	insertData := map[string]any{}
 	fieldInfo := currentModule.GetDbFieldInfo(info.getType)
 	if fieldInfo.FrontField != "" {
 		switch fieldInfo.Associations.Type {

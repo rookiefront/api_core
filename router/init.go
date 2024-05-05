@@ -1,12 +1,15 @@
 package router
 
 import (
+	"github.com/front-ck996/csy"
 	"github.com/front-ck996/csy/gin_middleware"
 	config2 "github.com/rookiefront/api-core/config"
 	"github.com/rookiefront/api-core/controller/business"
 	"github.com/rookiefront/api-core/controller/easy_curd"
 	"github.com/rookiefront/api-core/define"
 	"github.com/rookiefront/api-core/global"
+	"github.com/rookiefront/api-core/model"
+	"github.com/rookiefront/api-core/service"
 )
 
 func Register() {
@@ -51,31 +54,31 @@ func Register() {
 	businessApi.Any("/:table", define.WrapHandler(business.EasyCURD))
 
 	if config2.IsDev() {
-		//rootUser := model.SysUser{
-		//	UserName: "user_root",
-		//}
-		//user := model.SysUser{}
-		//global.DB.Unscoped().Where(rootUser).First(&user)
-		//if !user.IdTure() {
-		//	userSign := csy.RandomString(8)
-		//	global.DB.Save(&model.SysUser{
-		//		UserName: "user_root",
-		//		NickName: "超级管理员",
-		//		Sign:     userSign,
-		//		Password: service.User.Encrypt("user_root123456user_root123456", userSign),
-		//		Enable:   1,
-		//	})
-		//}
-		//initMenu := model.SysMenu{}
-		//initMenu.CreateUserID = 1
-		//global.DB.Unscoped().Where(model.SysMenu{
-		//	Module: "menu",
-		//}).First(&initMenu)
-		//if initMenu.MenuName == "" {
-		//	initMenu.MenuName = "菜单管理"
-		//}
-		//initMenu.Component = "/"
-		//global.DB.Save(&initMenu)
+		rootUser := model.SysUser{
+			UserName: "user_root",
+		}
+		user := model.SysUser{}
+		global.DB.Unscoped().Where(rootUser).First(&user)
+		if !user.IdTure() {
+			userSign := csy.RandomString(8)
+			global.DB.Save(&model.SysUser{
+				UserName: "user_root",
+				NickName: "超级管理员",
+				Sign:     userSign,
+				Password: service.User.Encrypt("user_root123456user_root123456", userSign),
+				Enable:   1,
+			})
+		}
+		initMenu := model.SysMenu{}
+		initMenu.CreateUserID = 1
+		global.DB.Unscoped().Where(model.SysMenu{
+			Module: "menu",
+		}).First(&initMenu)
+		if initMenu.MenuName == "" {
+			initMenu.MenuName = "菜单管理"
+		}
+		initMenu.Component = "/"
+		global.DB.Save(&initMenu)
 	}
 
 }
