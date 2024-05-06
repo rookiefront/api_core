@@ -10,6 +10,7 @@ import (
 	"github.com/rookiefront/api-core/model"
 	"github.com/rookiefront/api-core/service"
 	"net/http"
+	"strings"
 )
 
 type BasicContext struct {
@@ -136,12 +137,12 @@ func (c *BasicContext) VerifyRequestQualification(verifyPermission string) error
 	if userInfo.UserName == "user_root" {
 		return nil
 	}
-	//for _, role := range userInfo.RoleList {
-	//	permissionList := strings.Split(role.PermissionList, ",")
-	//	if csy.SliceInclude[string](permissionList, verifyPermission) {
-	//		return nil
-	//	}
-	//}
+	for _, role := range userInfo.RoleList {
+		permissionList := strings.Split(role.PermissionList, ",")
+		if csy.SliceInclude[string](permissionList, verifyPermission) {
+			return nil
+		}
+	}
 	c.SendJsonErrCode("无权限访问", 40002)
 	return errors.New("无权限")
 }

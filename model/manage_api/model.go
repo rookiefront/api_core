@@ -19,6 +19,7 @@ type ManageApiModule struct {
 	Update      bool                     `json:"update"`
 	Where       bool                     `json:"where"`
 	DialogWidth int                      `json:"dialog_width"`
+	PublicWhere bool                     `json:"public_where"`
 
 	TableOperateBtn model.DataJSONArray `json:"table_operate_btn" gorm:"column:table_operate_btn;type:longtext"`
 }

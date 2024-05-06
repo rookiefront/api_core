@@ -32,12 +32,14 @@ func getVerify(c *define.BasicContext, info reqInfo, dbHandle *gorm.DB, reqData 
 func Get(c *define.BasicContext, info reqInfo, result any, currentModule manage_api.ManageApiModule) {
 	reqData := c.GetReqData()
 	dbHandle := global.DB.Table(info.fullTableName)
-	if c.VerifyRequestQualification(currentModule.TaName+"_query") != nil {
-		return
-	}
 	switch info.getType {
 	// tree 数据懒加载
 	case "lazy":
+		if !currentModule.PublicWhere {
+			if c.VerifyRequestQualification(currentModule.TaName+"_query") != nil {
+				return
+			}
+		}
 		if reqData[currentModule.Tree.PID] == nil {
 			fieldName := currentModule.GetDbField(currentModule.Tree.PID)
 			if fieldName == "" {
@@ -58,6 +60,9 @@ func Get(c *define.BasicContext, info reqInfo, result any, currentModule manage_
 		break
 	//	list 数据无分页
 	case "list":
+		if c.VerifyRequestQualification(currentModule.TaName+"_query") != nil {
+			return
+		}
 		if err := getVerify(c, info, dbHandle, reqData); err != nil {
 			return
 		}
@@ -69,6 +74,11 @@ func Get(c *define.BasicContext, info reqInfo, result any, currentModule manage_
 		break
 	//	分页数据
 	case "page":
+		if !currentModule.PublicWhere {
+			if c.VerifyRequestQualification(currentModule.TaName+"_query") != nil {
+				return
+			}
+		}
 		if err := getVerify(c, info, dbHandle, reqData); err != nil {
 			return
 		}
@@ -109,6 +119,11 @@ func Get(c *define.BasicContext, info reqInfo, result any, currentModule manage_
 		break
 	// 单条数据,主键查询
 	case "info":
+		if !currentModule.PublicWhere {
+			if c.VerifyRequestQualification(currentModule.TaName+"_query") != nil {
+				return
+			}
+		}
 		tx := dbHandle.Where("id = ? ", reqData["id"]).First(&result)
 		if tx.Error != nil {
 			c.SendJsonOk(nil)
@@ -118,6 +133,12 @@ func Get(c *define.BasicContext, info reqInfo, result any, currentModule manage_
 		break
 	//	单挑数据,条件查询排除了主键
 	case "find":
+		if !currentModule.PublicWhere {
+			if c.VerifyRequestQualification(currentModule.TaName+"_query") != nil {
+				return
+			}
+		}
+
 		if err := getVerify(c, info, dbHandle, reqData); err != nil {
 			c.SendJsonErr(err)
 			return

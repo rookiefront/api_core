@@ -35,8 +35,6 @@ type userLogin struct {
 type userUpdate struct {
 	model.Model
 	UserName string `json:"userName" validate:"required"`
-	//BlindDateMember       model.BlindDateMember `json:"blindDateMember" gorm:"foreignKey:UserId;comment:对应的相亲用户ID"`
-	//BlindDateMemberEnable int                   `json:"blindDateMemberEnable" gorm:"column:blind_date_member_enable;type:tinyint(1);default:2;comment:相亲信息激活"`
 }
 type userSetPassword struct {
 	UserId   model.PrimarykeyType `json:"userId"`
@@ -91,11 +89,15 @@ func (api *ApiUser) Register(c *define.BasicContext) {
 		return
 	}
 	userSign := csy.RandomString(8)
+	role := model.SysRole{}
+	role.ID = 2
 	userData := model.SysUser{
 		NickName: req.NickName,
 		UserName: req.UserName,
 		Sign:     userSign,
 		Password: service.User.Encrypt(req.PassWord, userSign),
+		Enable:   1,
+		RoleList: []model.SysRole{role},
 	}
 	err = service.User.VerifyRegister(userData)
 
