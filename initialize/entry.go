@@ -19,7 +19,7 @@ func Init() {
 	r := gin.Default()
 	global.Engine = r
 	currentConfig := config.GetConfig()
-	r.Static(currentConfig.System.StaticPreFix, "./public/"+currentConfig.System.StaticDir)
+	r.Static(currentConfig.System.StaticPreFix, "./public/"+currentConfig.System.StaticDir+"/../")
 
 	// 注册路由
 	router.Register()
