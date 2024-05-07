@@ -7,4 +7,5 @@ import (
 
 var Engine *gin.Engine
 var ApiManageRouter *gin.RouterGroup
+var ApiPrefix *gin.RouterGroup
 var DB *gorm.DB

@@ -10,6 +10,7 @@ import (
 	"github.com/rookiefront/api-core/model"
 	"github.com/rookiefront/api-core/service"
 	"net/http"
+	"strconv"
 	"strings"
 )
 
@@ -128,6 +129,16 @@ func (c *BasicContext) GetCurrentUserId() string {
 		return ""
 	}
 	return fmt.Sprintf("%.0f", userMap["id"])
+}
+
+func (c *BasicContext) GetCurrentUserIdToInt() int {
+	token := c.GetHeader("X-Token")
+	userMap, err := service.User.ParseToken(token)
+	if err != nil {
+		return 0
+	}
+	int64Num, _ := strconv.ParseInt(fmt.Sprintf("%.0f", userMap["id"]), 10, 64)
+	return int(int64Num)
 }
 
 func (c *BasicContext) VerifyRequestQualification(verifyPermission string) error {

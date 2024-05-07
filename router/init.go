@@ -47,6 +47,7 @@ func Register() {
 
 	// 业务模块api
 	businessApi := global.Engine.Group(config.System.ApiPrefix)
+	global.ApiPrefix = businessApi
 	if config2.IsDev() {
 		businessApi.Use(gin_middleware.Cors())
 	}
