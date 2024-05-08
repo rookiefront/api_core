@@ -4,6 +4,6 @@ import (
 	"github.com/rookiefront/api-core/initialize"
 )
 
-func Register() {
-	initialize.Init()
+func Register(callBack func()) {
+	initialize.Init(callBack)
 }

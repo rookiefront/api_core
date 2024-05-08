@@ -11,7 +11,7 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-func Init() {
+func Init(callBack func()) {
 	// 加载配置文件
 	config.LoadConfig()
 	// 链接数据库
@@ -44,6 +44,7 @@ func Init() {
 	if config.IsDev() {
 		global.DB.Logger = global.DB.Logger.LogMode(logger.Info)
 	}
+	callBack()
 	// 开放端口
 	r.Run(fmt.Sprintf("%s:%d", currentConfig.System.Host, currentConfig.System.Port))
 }
