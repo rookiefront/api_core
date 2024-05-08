@@ -17,7 +17,7 @@ type Model struct {
 	CreatedAt    time.Time      `json:"created_at"`
 	UpdatedAt    time.Time      `json:"updated_at"`
 	DeletedAt    gorm.DeletedAt `json:"deleted_at" gorm:"index"`
-	CreateUserID uint           `json:"-" gorm:"column:c_id;index"`
+	CreateUserID int            `json:"-" gorm:"column:c_id;index"`
 }
 
 type DataJSON map[string]any
