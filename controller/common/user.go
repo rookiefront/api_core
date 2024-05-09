@@ -18,6 +18,15 @@ import (
 type ApiUser struct {
 }
 
+var InputApiList []RequestResourceDefine
+
+func init() {
+	InputApiList = append(InputApiList, RequestResourceDefine{
+		Label:      "外部API",
+		Permission: "api",
+	})
+}
+
 type userRegister struct {
 	NickName  string `json:"nickName" validate:"required"`
 	UserName  string `json:"userName" validate:"required"`
@@ -341,5 +350,6 @@ func (api *ApiUser) RequestResource(c *define.BasicContext) {
 			}
 		}
 	}
+	result = append(result, InputApiList...)
 	c.SendJsonOk(result)
 }

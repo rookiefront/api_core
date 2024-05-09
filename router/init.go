@@ -5,11 +5,14 @@ import (
 	"github.com/front-ck996/csy/gin_middleware"
 	config2 "github.com/rookiefront/api-core/config"
 	"github.com/rookiefront/api-core/controller/business"
+	"github.com/rookiefront/api-core/controller/common"
 	"github.com/rookiefront/api-core/controller/easy_curd"
 	"github.com/rookiefront/api-core/define"
 	"github.com/rookiefront/api-core/global"
+	"github.com/rookiefront/api-core/middleware"
 	"github.com/rookiefront/api-core/model"
 	"github.com/rookiefront/api-core/service"
+	"net/http"
 )
 
 func Register() {
@@ -48,6 +51,8 @@ func Register() {
 	// 业务模块api
 	businessApi := global.Engine.Group(config.System.ApiPrefix)
 	global.ApiPrefix = businessApi
+	global.ApiPrefixAuth = businessApi.Use(middleware.InterceptNotLoggedIn)
+
 	if config2.IsDev() {
 		businessApi.Use(gin_middleware.Cors())
 	}
@@ -82,4 +87,35 @@ func Register() {
 		global.DB.Save(&initMenu)
 	}
 
+}
+
+func RegisterApi(label string, method, url string, f func(c *define.BasicContext)) {
+	common.InputApiList = append(common.InputApiList, common.RequestResourceDefine{
+		Label:      label,
+		Permission: url,
+		ParentID:   "api",
+	})
+	switch method {
+	case http.MethodPost:
+		global.ApiPrefixAuth.POST(url, define.WrapHandler(f))
+	case http.MethodDelete:
+		global.ApiPrefixAuth.DELETE(url, define.WrapHandler(f))
+	case http.MethodPut:
+		global.ApiPrefixAuth.PUT(url, define.WrapHandler(f))
+	case http.MethodGet:
+		global.ApiPrefixAuth.GET(url, define.WrapHandler(f))
+	}
+}
+
+func RegisterPublicApi(method, url string, f func(c *define.BasicContext)) {
+	switch method {
+	case http.MethodPost:
+		global.ApiPrefix.POST(url, define.WrapHandler(f))
+	case http.MethodDelete:
+		global.ApiPrefix.DELETE(url, define.WrapHandler(f))
+	case http.MethodPut:
+		global.ApiPrefix.PUT(url, define.WrapHandler(f))
+	case http.MethodGet:
+		global.ApiPrefix.GET(url, define.WrapHandler(f))
+	}
 }
