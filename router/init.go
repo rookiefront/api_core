@@ -3,6 +3,7 @@ package router
 import (
 	"github.com/front-ck996/csy"
 	"github.com/front-ck996/csy/gin_middleware"
+	"github.com/gin-gonic/gin"
 	config2 "github.com/rookiefront/api-core/config"
 	"github.com/rookiefront/api-core/controller/business"
 	"github.com/rookiefront/api-core/controller/common"
@@ -17,10 +18,13 @@ import (
 
 func Register() {
 	config := config2.GetConfig()
-	if config2.IsDev() {
+	if config.ManageApi.Enable {
 		// 接口管理模块
 		apiManageApi := global.Engine.Group("/manage_api")
 		apiManageApi.Use(gin_middleware.Cors())
+		apiManageApi.Use(gin.BasicAuth(gin.Accounts{
+			config.ManageApi.Account: config.ManageApi.Password,
+		}))
 		global.ApiManageRouter = apiManageApi
 		apiManageApi.POST("/generate_bus_table", define.WrapHandler(easy_curd.GenerateBusTableApi))
 		apiManageApi.POST("/db_field_conv_front", define.WrapHandler(easy_curd.FbFieldConvFront))

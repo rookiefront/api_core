@@ -9,8 +9,9 @@ import (
 const Version = "1.0.0"
 
 type Config struct {
-	System System `yaml:"system"`
-	Db     DB     `yaml:"db"`
+	System    System    `yaml:"system"`
+	Db        DB        `yaml:"db"`
+	ManageApi ManageApi `yaml:"manage_api"`
 }
 
 const (
@@ -32,6 +33,11 @@ type System struct {
 	FullUploadDir string `yaml:"-"`
 	FullDbDir     string `yaml:"-"`
 	ApiPrefix     string `yaml:"api_prefix"` // api 地址前缀
+}
+type ManageApi struct {
+	Enable   bool   `yaml:"enable"`
+	Account  string `yaml:"account"`
+	Password string `yaml:"password"`
 }
 
 type DB struct {

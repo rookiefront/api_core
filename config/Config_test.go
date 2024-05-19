@@ -21,6 +21,11 @@ func TestSetConfig(t *testing.T) {
 			UploadDir:    "/static_files/deploy/uploads",
 			ApiPrefix:    "/api/v1",
 		},
+		ManageApi: config.ManageApi{
+			Account:  "admin",
+			Password: "123456",
+			Enable:   true,
+		},
 		Db: config.DB{
 			DSN:         "root:root@tcp(192.168.0.190:13306)/2023_12_19_site_api?charset=utf8mb4&parseTime=True&loc=Local",
 			MaxOpenConn: 100,
