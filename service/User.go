@@ -36,7 +36,9 @@ func (s _user) Encrypt(input string, sign string) string {
 // 验证注册数据, 是否符合入库标准
 func (s _user) VerifyRegister(user model.SysUser) error {
 	var u model.SysUser
-	global.DB.Where(user).First(&u)
+	global.DB.Where(model.SysUser{
+		UserName: user.UserName,
+	}).First(&u)
 	if u.Model.ID != 0 {
 		return errors.New("用户名已存在")
 	}

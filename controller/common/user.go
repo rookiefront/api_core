@@ -85,7 +85,7 @@ func (api *ApiUser) Register(c *define.BasicContext) {
 		c.SendJsonErr(err)
 		return
 	}
-	// 验证码是否输如正确
+	// 验证码是否输入正确
 	match := common.Captcha.Verify(req.CaptchaId, req.Captcha, true)
 	if !match {
 		c.SendJsonErr("验证码输入错误")
