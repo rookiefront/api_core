@@ -30,7 +30,15 @@ func getVerify(c *define.BasicContext, info reqInfo, dbHandle *gorm.DB, reqData 
 }
 
 func Get(c *define.BasicContext, info reqInfo, result any, currentModule manage_api.ManageApiModule) {
+
 	reqData := c.GetReqData()
+	// 如果内置的字段存在
+	if currentModule.TableName() == "sys_dict_item" {
+		if _, ok := reqData["dictType"]; ok && model.GetSystemStatus(reqData["dictType"].(string)) != nil {
+			c.SendJsonOk(model.GetSystemStatus(reqData["dictType"].(string)))
+			return
+		}
+	}
 	dbHandle := global.DB.Table(info.fullTableName)
 	switch info.getType {
 	// tree 数据懒加载

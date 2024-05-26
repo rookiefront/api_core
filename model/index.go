@@ -11,6 +11,7 @@ import (
 type PrimarykeyType uint
 
 var hash map[string]any
+var dicts map[string][]SysDictItem
 
 type Model struct {
 	ID           PrimarykeyType `json:"id" gorm:"primarykey;int"`
@@ -22,6 +23,10 @@ type Model struct {
 
 type DataJSON map[string]any
 type DataJSONArray []map[string]any
+
+func init() {
+	dicts = map[string][]SysDictItem{}
+}
 
 // 解析数据
 func (j *DataJSON) Scan(value interface{}) error {
@@ -90,4 +95,17 @@ func GetModel(tableName string, isArray bool) (interface{}, error) {
 		return hash[tableName], nil
 	}
 	return "", errors.New("未找到")
+}
+
+func RegisterSystemStatus(dictType string, value []SysDictItem) {
+	for i, _ := range value {
+		value[i].DictType = dictType
+	}
+	dicts[dictType] = value
+}
+func GetSystemStatus(dictType string) []SysDictItem {
+	if _, ok := hash[dictType]; ok {
+		return dicts[dictType]
+	}
+	return nil
 }

@@ -131,13 +131,23 @@ type %s struct {
 func (%s) TableName() string {
 	return "%s"
 }
+
+
+type %s struct {
+	%s
+}
+
 `,
 		existTimeField,
 
 		csy.StrCapitalize(csy.StrFirstToUpper(findData.TaName)),
 		strings.Join(fields, "\r\n"),
 		csy.StrCapitalize(csy.StrFirstToUpper(findData.TaName)),
-		findData.TaName)
+		findData.TaName,
+
+		"NoModel"+csy.StrCapitalize(csy.StrFirstToUpper(findData.TaName)),
+		strings.Join(fields, "\r\n"),
+	)
 
 	// 格式化代码
 	code, err2 := csy.FormatCode([]byte(modelTemplateStr))

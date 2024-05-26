@@ -166,7 +166,7 @@ func (c *BasicContext) VerifyRequestQualification(verifyPermission string) error
 
 func (c *BasicContext) VerifyDbExecuteIsOk(tx *gorm.DB) bool {
 	if tx.Error != nil {
-		c.SendJsonErrCode("无权限访问", 40003)
+		c.SendJsonErrCode(tx.Error, 40003)
 		return false
 	}
 	return true

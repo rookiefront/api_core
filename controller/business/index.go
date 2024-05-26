@@ -53,6 +53,7 @@ func EasyCURD(c *define.BasicContext) {
 		return
 	}
 	currentModule := manage_api.GetModule(req.tableName)
+
 	req.fullTableName = currentModule.TaName
 	switch c.Request.Method {
 	case http.MethodGet:
