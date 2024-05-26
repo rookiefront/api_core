@@ -104,7 +104,7 @@ func RegisterSystemStatus(dictType string, value []SysDictItem) {
 	dicts[dictType] = value
 }
 func GetSystemStatus(dictType string) []SysDictItem {
-	if _, ok := hash[dictType]; ok {
+	if _, ok := dicts[dictType]; ok {
 		return dicts[dictType]
 	}
 	return nil
