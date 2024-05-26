@@ -9,6 +9,7 @@ import (
 	"github.com/rookiefront/api-core/global"
 	"github.com/rookiefront/api-core/model"
 	"github.com/rookiefront/api-core/service"
+	"gorm.io/gorm"
 	"net/http"
 	"strconv"
 	"strings"
@@ -111,6 +112,9 @@ func (c *BasicContext) GetReqData() (reqData map[string]any) {
 		for m, v := range postQuery {
 			query[m] = v
 		}
+		if len(postQuery) != 0 {
+			return query
+		}
 	}
 	var jsonData map[string]any
 	c.ShouldBindJSON(&jsonData)
@@ -131,6 +135,7 @@ func (c *BasicContext) GetCurrentUserId() string {
 	return fmt.Sprintf("%.0f", userMap["id"])
 }
 
+// GetCurrentUserIdToInt 获取用户ID 转换成 Int 类型
 func (c *BasicContext) GetCurrentUserIdToInt() int {
 	token := c.GetHeader("X-Token")
 	userMap, err := service.User.ParseToken(token)
@@ -141,6 +146,7 @@ func (c *BasicContext) GetCurrentUserIdToInt() int {
 	return int(int64Num)
 }
 
+// VerifyRequestQualification 验证用户权限是否存在
 func (c *BasicContext) VerifyRequestQualification(verifyPermission string) error {
 	userId := c.GetCurrentUserId()
 	userInfo := model.SysUser{}
@@ -156,4 +162,12 @@ func (c *BasicContext) VerifyRequestQualification(verifyPermission string) error
 	}
 	c.SendJsonErrCode("无权限访问", 40002)
 	return errors.New("无权限")
+}
+
+func (c *BasicContext) VerifyDbExecuteIsOk(tx *gorm.DB) bool {
+	if tx.Error != nil {
+		c.SendJsonErrCode("无权限访问", 40003)
+		return false
+	}
+	return true
 }
