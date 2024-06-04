@@ -137,6 +137,9 @@ type %s struct {
 	%s
 }
 
+func (%s) TableName() string {
+	return "%s"
+}
 `,
 		existTimeField,
 
@@ -144,9 +147,13 @@ type %s struct {
 		strings.Join(fields, "\r\n"),
 		csy.StrCapitalize(csy.StrFirstToUpper(findData.TaName)),
 		findData.TaName,
-
+		// 模型名称
 		"NoModel"+csy.StrCapitalize(csy.StrFirstToUpper(findData.TaName)),
 		strings.Join(fields, "\r\n"),
+
+		// 表名
+		"NoModel"+csy.StrCapitalize(csy.StrFirstToUpper(findData.TaName)),
+		findData.TaName,
 	)
 
 	// 格式化代码
