@@ -14,20 +14,22 @@ func registerSystemRouter() {
 	apiUser := common.ApiUser{}
 
 	commonApi.GET("/captcha", define.WrapHandler(common.GetCaptcha))
+
+	commonApi.GET("/geoip", define.WrapHandler(common.GeoIp))
+
 	//// 用户相关
 	// 注册
 	commonApi.POST("/user/register", define.WrapHandler(apiUser.Register))
-	//
 	// 登录
 	commonApi.POST("/user/login", define.WrapHandler(apiUser.Login))
-	//
 	// 当前登录用户的详情
 	commonApiAuti.GET("/user/info", define.WrapHandler(apiUser.UserInfo))
-	//
+
 	// 退出登录
 	commonApiAuti.GET("/user/logout", define.WrapHandler(apiUser.Logout))
 	commonApiAuti.POST("/user/update", define.WrapHandler(apiUser.Update))
-	//// 获取角色的菜单列表
+
+	// 获取角色的菜单列表
 	commonApiAuti.GET("/user/role_menu_list", define.WrapHandler(apiUser.RoleMenuList))
 	commonApiAuti.GET("/user/current_user_menu", define.WrapHandler(apiUser.CurrentUserMenu))
 	commonApiAuti.POST("/user/set_password", define.WrapHandler(apiUser.SetPassword))

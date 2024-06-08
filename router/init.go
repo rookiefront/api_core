@@ -53,12 +53,13 @@ func Register() {
 	registerSystemRouter()
 
 	// 业务模块api
+	global.ApiPrefix = global.Engine.Group(config.System.ApiPrefix)
 	businessApi := global.Engine.Group(config.System.ApiPrefix)
-	global.ApiPrefix = businessApi
 	global.ApiPrefixAuth = businessApi.Use(middleware.InterceptNotLoggedIn)
 
 	if config2.IsDev() {
 		businessApi.Use(gin_middleware.Cors())
+		global.ApiPrefix.Use(gin_middleware.Cors())
 	}
 	businessApi.Any("/:table/*path", define.WrapHandler(business.EasyCURD))
 	businessApi.Any("/:table", define.WrapHandler(business.EasyCURD))
