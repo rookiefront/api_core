@@ -7,7 +7,6 @@ import (
 	"github.com/xiaoqidun/qqwry"
 )
 
-// var loc *iploc.Locator
 var qqwryLoaded = false
 
 func GeoIp(c *define.BasicContext) {
