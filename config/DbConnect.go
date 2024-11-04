@@ -3,6 +3,7 @@ package config
 import (
 	"github.com/rookiefront/api-core/global"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 	"log"
 	"time"
 )
@@ -39,6 +40,6 @@ func DbConnect() {
 	// 链接最大空闲时间
 	s.SetConnMaxLifetime(time.Hour)
 	if IsDev() {
-		//db.Logger = db.Logger.LogMode(logger.Info)
+		db.Logger = db.Logger.LogMode(logger.Info)
 	}
 }

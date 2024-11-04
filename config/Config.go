@@ -48,11 +48,15 @@ type DB struct {
 
 var _config = Config{}
 
-func LoadConfig() {
-	configFiles := []string{
+func LoadConfig(inputConfig ...string) {
+	configFiles := []string{}
+	if len(inputConfig) > 0 {
+		configFiles = append(configFiles, inputConfig...)
+	}
+	configFiles = append(configFiles, []string{
 		"config.yaml",
 		"../../config.yaml",
-	}
+	}...)
 	file := []byte{}
 	var err error
 	for _, f := range configFiles {
