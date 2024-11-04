@@ -5,6 +5,7 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
+	"os"
 )
 
 var writeLevel zapcore.Level = -2
@@ -46,7 +47,7 @@ func SetMinPrintLevel(level zapcore.Level) {
 	printLevel = level
 }
 func init() {
-	printLogger, _ = zap.NewDevelopment()
+	printLogger = newLoggerWithColor()
 }
 func Debug(msg string, fields ...zap.Field) {
 	level := zapcore.DebugLevel
@@ -160,19 +161,42 @@ func newLogger(filename string, level zapcore.Level) *zap.Logger {
 
 	// 配置 zap 的编码器和级别
 	encoderConfig := zapcore.EncoderConfig{
-		TimeKey:      "time",
-		LevelKey:     "level",
-		MessageKey:   "msg",
-		CallerKey:    "caller",
-		EncodeLevel:  zapcore.CapitalLevelEncoder,
-		EncodeTime:   zapcore.ISO8601TimeEncoder,
-		EncodeCaller: zapcore.ShortCallerEncoder,
+		TimeKey:       "T",
+		LevelKey:      "L",
+		NameKey:       "N",
+		CallerKey:     "C",
+		MessageKey:    "M",
+		StacktraceKey: "S",
+		EncodeLevel:   zapcore.CapitalLevelEncoder,
+		EncodeTime:    zapcore.ISO8601TimeEncoder,
+		EncodeCaller:  zapcore.ShortCallerEncoder,
 	}
 	core := zapcore.NewCore(
 		zapcore.NewJSONEncoder(encoderConfig), // 使用 JSON 编码器
 		writer,                                // 使用 lumberjack 进行日志输出
 		level,                                 // 日志级别
 	)
+
+	return zap.New(core, zap.AddCaller())
+}
+
+func newLoggerWithColor() *zap.Logger {
+	encoderConfig := zapcore.EncoderConfig{
+		TimeKey:        "T",
+		LevelKey:       "L",
+		NameKey:        "N",
+		CallerKey:      "C",
+		MessageKey:     "M",
+		StacktraceKey:  "S",
+		LineEnding:     zapcore.DefaultLineEnding,
+		EncodeLevel:    zapcore.CapitalColorLevelEncoder, // 使用颜色编码
+		EncodeTime:     zapcore.ISO8601TimeEncoder,
+		EncodeDuration: zapcore.StringDurationEncoder,
+		EncodeCaller:   zapcore.ShortCallerEncoder,
+	}
+
+	consoleEncoder := zapcore.NewConsoleEncoder(encoderConfig)
+	core := zapcore.NewCore(consoleEncoder, zapcore.Lock(os.Stdout), zapcore.DebugLevel)
 
 	return zap.New(core, zap.AddCaller())
 }
