@@ -8,7 +8,6 @@ import (
 	"github.com/rookiefront/api-core/model"
 	"github.com/rookiefront/api-core/model/manage_api"
 	"github.com/rookiefront/api-core/router"
-	"gorm.io/gorm/logger"
 )
 
 func Init(callBack func()) {
@@ -39,10 +38,6 @@ func Init(callBack func()) {
 		if err != nil {
 			global.DB.AutoMigrate(getModel)
 		}
-	}
-
-	if config.IsDev() {
-		global.DB.Logger = global.DB.Logger.LogMode(logger.Info)
 	}
 	callBack()
 	// 开放端口

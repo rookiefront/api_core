@@ -79,7 +79,7 @@ func Info(msg string, fields ...zap.Field) {
 func Warn(msg string, fields ...zap.Field) {
 	level := zapcore.WarnLevel
 	if warnLogger == nil {
-		warnLogger = newLogger("logs/info.log", level)
+		warnLogger = newLogger("logs/warn.log", level)
 		defer warnLogger.Sync()
 	}
 	if printLevel <= level {
@@ -126,12 +126,10 @@ func Panic(msg string, fields ...zap.Field) {
 		panicLogger = newLogger("logs/panic.log", level)
 		defer panicLogger.Sync()
 	}
-	if printLevel <= level {
-		printLogger.Panic(msg, fields...)
-	}
 	if writeLevel <= level {
 		panicLogger.Panic(msg, fields...)
 	}
+
 }
 func Fatal(msg string, fields ...zap.Field) {
 	level := zapcore.FatalLevel
@@ -140,11 +138,8 @@ func Fatal(msg string, fields ...zap.Field) {
 		defer fatalLogger.Sync()
 	}
 	fatalLogger.Error(msg, fields...)
-	if printLevel <= level {
-		printLogger.Panic(msg, fields...)
-	}
 	if writeLevel <= level {
-		fatalLogger.Panic(msg, fields...)
+		fatalLogger.Fatal(msg, fields...)
 	}
 }
 
@@ -177,7 +172,7 @@ func newLogger(filename string, level zapcore.Level) *zap.Logger {
 		level,                                 // 日志级别
 	)
 
-	return zap.New(core, zap.AddCaller())
+	return zap.New(core, zap.AddCaller(), zap.AddStacktrace(zapcore.ErrorLevel))
 }
 
 func newLoggerWithColor() *zap.Logger {
@@ -198,5 +193,5 @@ func newLoggerWithColor() *zap.Logger {
 	consoleEncoder := zapcore.NewConsoleEncoder(encoderConfig)
 	core := zapcore.NewCore(consoleEncoder, zapcore.Lock(os.Stdout), zapcore.DebugLevel)
 
-	return zap.New(core, zap.AddCaller())
+	return zap.New(core, zap.AddCaller(), zap.AddStacktrace(zapcore.ErrorLevel))
 }

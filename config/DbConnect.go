@@ -1,16 +1,52 @@
 package config
 
 import (
+	"context"
+	"fmt"
 	"github.com/rookiefront/api-core/global"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"log"
+	"os"
 	"time"
 )
 import "gorm.io/driver/mysql"
 
+type dbLogger struct {
+	logger *log.Logger
+}
+
+func (s dbLogger) LogMode(level logger.LogLevel) logger.Interface {
+	return s
+}
+
+func (s dbLogger) Info(ctx context.Context, msg string, data ...interface{}) {
+	fmt.Println(msg)
+	// 可以选择是否记录 Info 级别的日志
+}
+
+func (s dbLogger) Warn(ctx context.Context, msg string, data ...interface{}) {
+	// 记录警告日志
+	s.logger.Printf(msg, data...)
+}
+
+func (s dbLogger) Error(ctx context.Context, msg string, data ...interface{}) {
+	// 记录错误日志
+	s.logger.Printf(msg, data...)
+}
+
+func (s dbLogger) Trace(ctx context.Context, begin time.Time, fc func() (string, int64), err error) {
+	elapsed := time.Since(begin)
+	sql, rows := fc()
+	if elapsed > time.Second { // 将慢查询的阈值设定为 1 秒
+		s.logger.Printf("SLOW QUERY: %s [%v] (%d rows)", sql, elapsed, rows)
+	}
+}
+
 func DbConnect() {
 	conf := GetConfig()
+	slowLogger := log.New(os.Stdout, "SLOW QUERY: ", log.LstdFlags)
+
 	db, err := gorm.Open(mysql.New(mysql.Config{
 		DSN: conf.Db.DSN,
 		//"gorm:gorm@tcp(127.0.0.1:3306)/gorm?charset=utf8&parseTime=True&loc=Local", // DSN data source name
@@ -22,11 +58,14 @@ func DbConnect() {
 	}), &gorm.Config{
 		DisableForeignKeyConstraintWhenMigrating: true, // 禁用外键约束
 		//SkipDefaultTransaction:                   true,
+		Logger: dbLogger{logger: slowLogger},
 	})
 	if err != nil {
 		log.Fatalln(err)
 		return
 	}
+
+	db.Logger = logger.Default.LogMode(logger.Error)
 	global.DB = db
 	s, err := db.DB()
 	if err != nil {
@@ -39,7 +78,4 @@ func DbConnect() {
 	s.SetMaxOpenConns(conf.Db.MaxOpenConn)
 	// 链接最大空闲时间
 	s.SetConnMaxLifetime(time.Hour)
-	if IsDev() {
-		db.Logger = db.Logger.LogMode(logger.Info)
-	}
 }
