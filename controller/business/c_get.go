@@ -119,7 +119,7 @@ func Get(c *define.BasicContext, info reqInfo, result any, currentModule manage_
 		dbHandle.Limit(pageSize)
 
 		dbHandle.Find(&result)
-		c.SendJsonOkPage(result, gin.H{
+		c.SendJsonOkInfo(result, gin.H{
 			"total":    total,
 			"pageSize": pageSize,
 			"pageNum":  pageNum,

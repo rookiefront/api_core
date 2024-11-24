@@ -35,7 +35,7 @@ func (c *BasicContext) SendJsonOk(data ...interface{}) {
 	}
 	c.JSON(200, outerJson)
 }
-func (c *BasicContext) SendJsonOkPage(data interface{}, pageData gin.H) {
+func (c *BasicContext) SendJsonOkInfo(data interface{}, pageData gin.H) {
 	outerJson := gin.H{
 		"msg":  "ok",
 		"code": 200,

@@ -47,9 +47,13 @@ type DB struct {
 }
 
 var _config = Config{}
+var DefaultConfigFile string
 
 func LoadConfig(inputConfig ...string) {
 	configFiles := []string{}
+	if DefaultConfigFile != "" {
+		configFiles = append(configFiles, DefaultConfigFile)
+	}
 	if len(inputConfig) > 0 {
 		configFiles = append(configFiles, inputConfig...)
 	}
