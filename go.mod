@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/chromedp/chromedp v0.9.3
-	github.com/front-ck996/csy v0.0.4
+	github.com/front-ck996/csy v0.0.7
 	github.com/gin-gonic/gin v1.9.1
 	github.com/go-playground/locales v0.14.1
 	github.com/go-playground/universal-translator v0.18.1
@@ -67,5 +67,3 @@ require (
 	google.golang.org/protobuf v1.30.0 // indirect
 	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 // indirect
 )
-
-replace github.com/front-ck996/csy => D:\code\go\csy

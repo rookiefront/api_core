@@ -20,7 +20,7 @@ type Model struct {
 	DeletedAt    gorm.DeletedAt `json:"deleted_at" gorm:"index"`
 	CreateUserID int            `json:"-" gorm:"column:c_id;index"`
 }
-
+type DataArrayString []string
 type DataJSON map[string]any
 type DataJSONArray []map[string]any
 
@@ -52,6 +52,28 @@ func (j DataJSON) Value() (driver.Value, error) {
 
 // 解析数据
 func (j *DataJSONArray) Scan(value interface{}) error {
+	bytes, ok := value.([]byte)
+	if !ok {
+		//return errors.New(fmt.Sprint("Failed to unmarshal JSONB value:", value))
+		return nil
+	}
+	if len(bytes) == 0 {
+		return nil
+	}
+	return json.Unmarshal(bytes, j)
+}
+
+// Value方法是将自定义结构体转译成数据库能识别储存的编码
+func (j DataArrayString) Value() (driver.Value, error) {
+	marshal, err := json.Marshal(j)
+	if err != nil {
+		return nil, err
+	}
+	return marshal, nil
+}
+
+// 解析数据
+func (j *DataArrayString) Scan(value interface{}) error {
 	bytes, ok := value.([]byte)
 	if !ok {
 		//return errors.New(fmt.Sprint("Failed to unmarshal JSONB value:", value))
